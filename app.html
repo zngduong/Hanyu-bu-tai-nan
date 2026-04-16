@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataSense — Hoc tieng Trung</title>
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body class="app-page">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <span class="app-logo">&#x1F004;</span>
+      <span class="app-name">DataSense</span>
+    </div>
+    <div class="header-center">
+      <select id="hsk-level-select" class="hsk-select" aria-label="Chon cap do HSK">
+        <option value="">Tat ca cap do</option>
+        <option value="1">HSK 1</option>
+        <option value="2">HSK 2</option>
+        <option value="3">HSK 3</option>
+        <option value="4">HSK 4</option>
+        <option value="5">HSK 5</option>
+        <option value="6">HSK 6</option>
+      </select>
+    </div>
+    <div class="header-right">
+      <img id="user-avatar" class="user-avatar hidden" alt="Avatar" />
+      <span id="user-name" class="user-name"></span>
+      <button id="btn-logout" class="btn btn-sm btn-outline" type="button">Dang xuat</button>
+    </div>
+  </header>
+
+  <!-- Mode tabs -->
+  <nav class="mode-tabs">
+    <button class="tab-btn active" data-mode="flashcard" type="button">Flashcard</button>
+    <button class="tab-btn" data-mode="quiz" type="button">Quiz</button>
+    <button class="tab-btn" data-mode="stats" type="button">Tien do</button>
+  </nav>
+
+  <!-- Main content area -->
+  <main class="app-main">
+
+    <!-- Loading state -->
+    <div id="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Dang tai du lieu...</p>
+    </div>
+
+    <!-- Flashcard mode -->
+    <section id="mode-flashcard" class="mode-section hidden">
+      <div class="flashcard-counter">
+        <span id="fc-current">1</span> / <span id="fc-total">0</span>
+      </div>
+
+      <div id="flashcard" class="flashcard" role="button" tabindex="0" aria-label="Click de lat the">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            <div class="fc-hanzi" id="fc-hanzi"></div>
+            <div class="fc-hsk-badge" id="fc-hsk-badge"></div>
+          </div>
+          <div class="flashcard-back">
+            <div class="fc-hanzi-sm" id="fc-hanzi-back"></div>
+            <div class="fc-pinyin" id="fc-pinyin"></div>
+            <div class="fc-meaning" id="fc-meaning"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc-actions hidden" id="fc-actions">
+        <button class="btn btn-danger" id="btn-wrong" type="button">Khong biet</button>
+        <button class="btn btn-success" id="btn-correct" type="button">Biet roi</button>
+      </div>
+
+      <div class="fc-nav">
+        <button class="btn btn-outline" id="btn-fc-prev" type="button">&#8592; Truoc</button>
+        <button class="btn btn-outline" id="btn-fc-next" type="button">Tiep &#8594;</button>
+      </div>
+    </section>
+
+    <!-- Quiz mode -->
+    <section id="mode-quiz" class="mode-section hidden">
+      <div id="quiz-start" class="quiz-start">
+        <h2>Quiz HSK</h2>
+        <p>Kiem tra kien thuc tu vung cua ban qua bai trac nghiem.</p>
+        <div class="quiz-config">
+          <label>
+            So cau hoi:
+            <select id="quiz-count-select" class="hsk-select">
+              <option value="10">10 cau</option>
+              <option value="20" selected>20 cau</option>
+              <option value="30">30 cau</option>
+            </select>
+          </label>
+        </div>
+        <button class="btn btn-primary" id="btn-start-quiz" type="button">Bat dau Quiz</button>
+      </div>
+
+      <div id="quiz-game" class="quiz-game hidden">
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+        </div>
+        <div class="quiz-info">
+          <span>Cau <span id="q-current">1</span>/<span id="q-total">20</span></span>
+          <span class="quiz-score-live">Diem: <span id="q-score">0</span></span>
+        </div>
+        <div class="quiz-question">
+          <div class="q-hanzi" id="q-hanzi"></div>
+          <div class="q-pinyin" id="q-pinyin"></div>
+        </div>
+        <div class="quiz-choices" id="quiz-choices"></div>
+        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+      </div>
+
+      <div id="quiz-result" class="quiz-result hidden">
+        <div class="result-icon" id="result-icon">&#127881;</div>
+        <h2>Ket qua Quiz</h2>
+        <div class="result-score">
+          <span id="result-correct">0</span>/<span id="result-total">0</span>
+        </div>
+        <p id="result-message"></p>
+        <button class="btn btn-primary" id="btn-retry-quiz" type="button">Lam lai</button>
+      </div>
+    </section>
+
+    <!-- Stats mode -->
+    <section id="mode-stats" class="mode-section hidden">
+      <h2 class="stats-title">Tien do hoc tap</h2>
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-total-seen">0</div>
+          <div class="stat-label">Tu da xem</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-mastered">0</div>
+          <div class="stat-label">Da thuan thuc</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-due-today">0</div>
+          <div class="stat-label">Can on hom nay</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-accuracy">—</div>
+          <div class="stat-label">Do chinh xac</div>
+        </div>
+      </div>
+      <div id="hsk-progress-bars" class="hsk-progress-section"></div>
+    </section>
+
+  </main>
+
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/flashcard.js"></script>
+  <script type="module" src="js/quiz.js"></script>
+</body>
+</html>
