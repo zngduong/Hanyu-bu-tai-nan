@@ -4,7 +4,7 @@
 // tu Project Settings > API tren Supabase dashboard
 // ============================================================
 
-const SUPABASE_URL = 'https://YOUR_PROJECT_REF.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+const SUPABASE_URL = 'https://eqapeomprzjkelwxztot.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Z6o4pXLWPmwTKmt4fMy4ig_xPqKdA5m';
 
 export { SUPABASE_URL, SUPABASE_ANON_KEY };
